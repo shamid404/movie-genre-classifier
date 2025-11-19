@@ -58,7 +58,7 @@ As a result of the pipeline, a clean and normalized CSV/Parquet (or another form
 - title — movie title;
 - genres — genres (in standardized form);
 - description — short description/plot of the movie.
-
+```
 
 
 ## 📊 Model Performance
@@ -330,7 +330,7 @@ def percent_tags_correct(y_true, y_pred):
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  DOCKER IMAGE                                               │
-│  Registry: fly.io/movie-genre-api-sparkling-frost-4339     │
+│  Registry: fly.io/movie_genre_api     │
 │  Size: ~300-400 MB (includes models)                       │
 │  Layers:                                                    │
 │    - OS + Python                                            │
@@ -354,7 +354,7 @@ def percent_tags_correct(y_true, y_pred):
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  PRODUCTION (FLY.IO)                                        │
-│  URL: https://movie-genre-api-sparkling-frost-4339.fly.dev │
+│  URL: https://movie_genre_api.fly.dev │
 │  Region: Amsterdam (ams)                                    │
 │  Resources: 512MB RAM, Shared CPU                          │
 │  Auto-scaling: Yes (scale to 0 when idle)                 │
@@ -370,22 +370,22 @@ def percent_tags_correct(y_true, y_pred):
 cd "C:\Users\admin\Desktop\movie_genre_api"
 
 # Deploy/Update application
-fly deploy --app movie-genre-api-sparkling-frost-4339
+fly deploy --app movie_genre_api
 
 # Start application (if stopped)
-fly scale count 1 --app movie-genre-api-sparkling-frost-4339
+fly scale count 1 --app movie_genre_api
 
 # Stop application (conserve resources)
-fly scale count 0 --app movie-genre-api-sparkling-frost-4339
+fly scale count 0 --app movie_genre_api
 
 # Check status
-fly status --app movie-genre-api-sparkling-frost-4339
+fly status --app movie_genre_api
 
 # View logs
-fly logs --app movie-genre-api-sparkling-frost-4339
+fly logs --app movie_genre_api
 
 # Open in browser
-fly open --app movie-genre-api-sparkling-frost-4339
+fly open --app movie_genre_api
 ```
 
 ---
