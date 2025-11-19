@@ -28,6 +28,38 @@
 ![photo_2025-11-19_16-01-16](https://github.com/user-attachments/assets/0c2d8e5e-65a9-4fad-8532-3097e085c606)
 
 ---
+## Source
+The dataset is taken from Kaggle:
+[Kaggle — IMDB Movies Dataset Based on Genre](https://www.kaggle.com/datasets/rajugc/imdb-movies-dataset-based-on-genre)
+
+```markdown
+# IMDB Movies Dataset (by genre) — description and data cleaning
+
+## Location in the project
+Archives and prepared files are stored in the project at:
+- /normalization/train_data.zip
+
+The script(s) responsible for merging, cleaning, and normalizing the data are located in:
+- /normalization/data_cleaner_code
+
+## What was done
+Several individual datasets from the archive were merged into a single tabular dataset, after which a fully automated cleaning and normalization process was performed.
+
+Main steps of the cleaning pipeline:
+- Removing movies with empty or placeholder descriptions (for example, "Add a Plot").
+- Removing duplicate movie records.
+- Keeping only relevant fields (title, genres, description).
+- Generating new sequential unique identifiers (ID) for all movies.
+- Preparing the final normalized dataset for use in the project.
+
+## Result
+As a result of the pipeline, a clean and normalized CSV/Parquet (or another format — see the contents of /normalization/train_data.zip) was obtained, containing:
+- id — new unique movie identifier;
+- title — movie title;
+- genres — genres (in standardized form);
+- description — short description/plot of the movie.
+
+
 
 ## 📊 Model Performance
 
