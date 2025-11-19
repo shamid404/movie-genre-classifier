@@ -1,0 +1,50 @@
+import pandas as pd
+import glob, os
+from itertools import chain
+
+
+data_dir = "/var/tmp/csv_datasets"
+csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
+
+#  Чтение
+df = pd.concat([pd.read_csv(f, dtype=str) for f in csv_files], ignore_index=True)
+
+#  Нормализация названий
+df['movie_name_norm'] = df['movie_name'].astype(str).str.strip().str.lower()
+
+# Преобразование жанров в списки
+def parse_genre(s):
+    if pd.isna(s): return []
+    s = str(s).strip().strip('"')
+    return [g.strip() for g in s.split(',') if g.strip()]
+
+df['genre_list'] = df['genre'].apply(parse_genre)
+
+# Удаление записей без описания или с “Add a Plot”
+df['description'] = df['description'].fillna("").astype(str)
+mask = ~df['description'].str.contains("Add a Plot", case=False, na=False)
+df = df[mask & df['description'].str.strip().ne("")]  # убираем пустые описания
+
+# Группировка
+grouped = df.groupby('movie_name_norm').agg({
+    'movie_name': 'first',
+    'description': lambda x: x.dropna().iloc[0] if len(x.dropna()) > 0 else "",
+    'genre_list': lambda lists: list(dict.fromkeys(chain.from_iterable(lists)))
+}).reset_index(drop=True)
+
+# Преобразуем жанры обратно в строку
+grouped['genre'] = grouped['genre_list'].apply(lambda g: ', '.join(sorted(g)))
+
+# новые ID
+grouped.insert(0, 'movie_id', range(1, len(grouped) + 1))
+
+# Только нужные колонки
+final_df = grouped[['movie_id', 'movie_name', 'description', 'genre']]
+
+# Сохранение
+save_path = os.path.join(data_dir, "cleaned_imdb_by_movie_name.csv")
+final_df.to_csv(save_path, index=False)
+
+print("Готово!")
+print(f"Сохранённый файл: {save_path}")
+print("Количество фильмов:", len(final_df))
